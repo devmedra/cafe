@@ -3,50 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coffee Hub | Sistema de Cafetería</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Brew & Co. | Experiencia de Café Premium</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <header>
-        <nav>
-            <div class="logo">COFFEE<span>HUB</span></div>
-            <ul class="nav-links">
-                <li><a href="#menu">Menú</a></li>
-                <li><a href="#promos">Promociones</a></li>
-                <li><a href="#contacto">Contacto</a></li>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">BREW<span>&CO.</span></a>
+            <div id="status-indicator" class="status-dot"></div>
+            <ul class="nav-menu">
+                <li><a href="#menu">La Carta</a></li>
+                <li><a href="#contacto">Ubicación</a></li>
+                <li><a href="https://wa.me/tu_numero" class="btn-nav">Reservar</a></li>
             </ul>
-            <div id="status-badge" class="badge">Cargando...</div>
-        </nav>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="hero-content">
+            <span class="hero-subtitle">Desde 2024</span>
+            <h1>El arte de la extracción perfecta</h1>
+            <p>Granos de origen seleccionados y tostados artesanalmente en pequeñas tandas.</p>
+            <div class="hero-btns">
+                <a href="#menu" class="btn-primary">Ver Menú</a>
+                <a href="#promo-banner" id="hero-promo-link" class="btn-outline">Ver Promoción</a>
+            </div>
+        </div>
     </header>
 
-    <section id="promos" class="promo-section"></section>
+    <section id="promo-banner" class="promo-bar"></section>
 
-    <section id="menu" class="container">
-        <h2 class="section-title">Nuestro Menú</h2>
-        <div id="menu-container" class="grid-menu">
+    <main class="container">
+        <section id="menu" class="section">
+            <div class="section-header">
+                <h2>Nuestra Selección</h2>
+                <div class="menu-filters">
+                    <button class="filter-btn active" onclick="filterMenu('Todos')">Todos</button>
+                    <button class="filter-btn" onclick="filterMenu('Café')">Café</button>
+                    <button class="filter-btn" onclick="filterMenu('Repostería')">Repostería</button>
+                </div>
             </div>
-    </section>
+            <div id="menu-grid" class="menu-grid">
+                </div>
+        </section>
 
-    <section id="contacto" class="container contact-grid">
-        <div class="contact-form">
-            <h3>Envíanos un mensaje</h3>
-            <form id="coffeeForm">
-                <input type="text" placeholder="Nombre" required>
-                <input type="email" placeholder="Email" required>
-                <textarea placeholder="¿En qué podemos ayudarte?"></textarea>
-                <button type="submit" class="btn-primary">Enviar Mensaje</button>
-            </form>
-        </div>
-        <div class="hours-info">
-            <h3>Horarios de Atención</h3>
-            <ul id="schedule-list">
-                </ul>
-        </div>
-    </section>
+        <section id="contacto" class="contact-section">
+            <div class="info-card">
+                <h3>Visítanos</h3>
+                <p><i class="fas fa-map-marker-alt"></i> Calle Falsa 123, Concepción</p>
+                <div id="working-hours" class="hours-widget"></div>
+            </div>
+            <div class="form-card">
+                <h3>Escríbenos</h3>
+                <form id="contact-form">
+                    <div class="input-group">
+                        <input type="text" placeholder="Nombre completo" required>
+                    </div>
+                    <div class="input-group">
+                        <input type="email" placeholder="Correo electrónico" required>
+                    </div>
+                    <textarea placeholder="¿Algún evento especial o duda?"></textarea>
+                    <button type="submit" class="btn-full">Enviar Solicitud</button>
+                </form>
+            </div>
+        </section>
+    </main>
 
-    <a href="https://wa.me/123456789" class="whatsapp-float" target="_blank">
+    <footer>
+        <p>&copy; 2024 Brew & Co. - Diseñado para medra.cl</p>
+    </footer>
+
+    <a href="https://wa.me/tu_numero" class="whatsapp-btn" target="_blank">
         <i class="fab fa-whatsapp"></i>
     </a>
 
