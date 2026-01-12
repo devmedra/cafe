@@ -1,61 +1,71 @@
-// SIMULACIÓN DE BASE DE DATOS (Editable)
-const CAFETERIA_DATA = {
-    config: {
-        nombre: "Coffee Hub",
-        promoActiva: true,
-        mensajePromo: "¡2x1 en Cappuccino todos los jueves!",
-        horarioApertura: 8, // 8 AM
-        horarioCierre: 20   // 8 PM
+const DB = {
+    settings: {
+        name: "Brew & Co.",
+        openHour: 9,
+        closeHour: 21,
+        promo: {
+            active: true,
+            text: "☕ HAPPY HOUR: 20% dcto en filtrados de 16:00 a 18:00"
+        }
     },
-    menu: [
-        { id: 1, nombre: "Espresso", precio: "$2.50", categoria: "Cafe", disponible: true },
-        { id: 2, nombre: "Cappuccino", precio: "$3.50", categoria: "Cafe", disponible: true },
-        { id: 3, nombre: "Muffin de Arándanos", precio: "$2.00", categoria: "Pastelería", disponible: true },
-        { id: 4, nombre: "Tostada Avocado", precio: "$5.00", categoria: "Comida", disponible: false }
+    items: [
+        { id: 1, title: "Flat White", price: 3200, cat: "Café", desc: "Doble shot de espresso con leche sedosa." },
+        { id: 2, title: "Cold Brew", price: 3500, cat: "Café", desc: "12 horas de extracción en frío." },
+        { id: 3, title: "Croissant Almendras", price: 2800, cat: "Repostería", desc: "Mantequilla pura y láminas de almendra tostada." },
+        { id: 4, title: "Cheesecake Berries", price: 3800, cat: "Repostería", desc: "Receta artesanal con frutos del bosque." }
     ]
 };
 
-// 1. Gestionar Horario Dinámico
-function checkHorario() {
-    const ahora = new Date();
-    const horaActual = ahora.getHours();
-    const badge = document.getElementById('status-badge');
+function initApp() {
+    renderStatus();
+    renderPromo();
+    renderMenu('Todos');
+}
+
+function renderStatus() {
+    const now = new Date().getHours();
+    const dot = document.getElementById('status-indicator');
+    const hoursText = document.getElementById('working-hours');
     
-    if (horaActual >= CAFETERIA_DATA.config.horarioApertura && horaActual < CAFETERIA_DATA.config.horarioCierre) {
-        badge.innerText = "● Abierto ahora";
-        badge.className = "badge open";
+    const isOpen = now >= DB.settings.openHour && now < DB.settings.closeHour;
+    
+    dot.className = isOpen ? 'status-dot open-bg' : 'status-dot closed-bg';
+    hoursText.innerHTML = `
+        <p><strong>Estado:</strong> ${isOpen ? 'Abierto' : 'Cerrado'}</p>
+        <p>Lunes a Sábado: ${DB.settings.openHour}:00 - ${DB.settings.closeHour}:00</p>
+    `;
+}
+
+function renderPromo() {
+    const banner = document.getElementById('promo-banner');
+    if (DB.settings.promo.active) {
+        banner.innerHTML = `<p>${DB.settings.promo.text}</p>`;
+        banner.style.display = 'block';
     } else {
-        badge.innerText = "● Cerrado por ahora";
-        badge.className = "badge closed";
+        document.getElementById('hero-promo-link').style.display = 'none';
     }
 }
 
-// 2. Renderizar Menú Editable
-function renderMenu() {
-    const container = document.getElementById('menu-container');
-    container.innerHTML = CAFETERIA_DATA.menu
-        .filter(item => item.disponible) // Solo muestra si está disponible
-        .map(item => `
-            <div class="menu-item">
-                <h4>${item.nombre}</h4>
-                <p>${item.categoria}</p>
-                <span class="price">${item.precio}</span>
-            </div>
-        `).join('');
+function renderMenu(category) {
+    const grid = document.getElementById('menu-grid');
+    const filtered = category === 'Todos' ? DB.items : DB.items.filter(i => i.cat === category);
+    
+    grid.innerHTML = filtered.map(item => `
+        <div class="menu-card">
+            <span class="category-tag">${item.cat}</span>
+            <h4>${item.title}</h4>
+            <p>${item.desc}</p>
+            <div class="price">$${item.price.toLocaleString('es-CL')}</div>
+        </div>
+    `).join('');
 }
 
-// 3. Activar/Desactivar Promociones
-function checkPromos() {
-    const promoEl = document.getElementById('promos');
-    if (CAFETERIA_DATA.config.promoActiva) {
-        promoEl.innerHTML = `<p><strong>PROMO:</strong> ${CAFETERIA_DATA.config.mensajePromo}</p>`;
-        promoEl.classList.add('promo-active');
-    }
+function filterMenu(cat) {
+    // Cambiar estado activo de botones
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.innerText === cat);
+    });
+    renderMenu(cat);
 }
 
-// Inicializar sistema
-document.addEventListener('DOMContentLoaded', () => {
-    checkHorario();
-    renderMenu();
-    checkPromos();
-});
+document.addEventListener('DOMContentLoaded', initApp);
